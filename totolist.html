@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .done {
+            color: gray;
+            text-decoration: line-through;
+        }
+
+        ul li {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+        }
+
+        span {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="todo">
+    <button onclick="addTask()">Add</button>
+    <button onclick="clearTasks()">x</button>
+
+    <ul id="lists">
+
+    </ul>
+
+    <script>
+        const todo = document.getElementById("todo");
+        const lists = document.getElementById("lists");
+        let mytodos = [];
+
+        function addTask() {
+            const tasktext = todo.value.trim();
+
+            if(tasktext === "") return;
+
+            const task = {
+                text: tasktext,
+                status: false,
+            };
+
+            mytodos.push(task);
+            localStorage.setItem("mytodos", JSON.stringify(mytodos));
+
+            todo.value = "";
+
+            renderTask();
+
+        }
+
+        function renderTask() {
+            lists.innerHTML = "";
+            mytodos = JSON.parse(localStorage.getItem("mytodos"));
+            mytodos.forEach((task, index) => {
+                const li = document.createElement("li");
+                const span = document.createElement("span");
+                li.textContent = task.text;
+                span.textContent = "x"
+
+                if (task.status) {
+                    li.classList.add("done");
+                }
+
+                lists.appendChild(li);
+                li.appendChild(span);
+
+                li.addEventListener("click", () => {
+                   task.status = !task.status;
+
+                   li.classList.toggle("done");
+
+                    // save back to localStorage
+                    localStorage.setItem("mytodos", JSON.stringify(mytodos));
+                })
+
+          
+            });
+
+            // console.log(mytodos[0].status);
+
+        }
+
+        renderTask();
+
+        function clearTasks() {
+            mytodos = [];
+            localStorage.removeItem("mytodos");
+            lists.innerHTML = "";
+        }
+
+    </script>
+
+</body>
+</html>

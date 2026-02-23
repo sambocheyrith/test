@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1 id="star"></h1>
+
+    <p>hello</p>
+    <p>hello</p>
+
+    <h1 id="result"></h1>
+
+    <script>
+        var fruits = ['apple', 'banana', 'orange'];
+
+        var paragraphs = document.querySelectorAll('p');
+        var result = document.getElementById('result');
+
+        for(var i = 0; i < fruits.length; i++){
+            console.log(fruits[i]);
+        }
+
+        for(var j = 1; j <= 3; j++){
+            document.getElementById('star').innerHTML += "⭐";
+        }
+
+       paragraphs.forEach(element => {
+        element.style.color = "red";
+       });
+
+
+       fruits.forEach(element => {
+        result.innerHTML += element;
+       });
+
+       var num = 25;
+       console.log(num += 2);
+    </script>
+</body>
+</html>

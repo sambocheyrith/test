@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        <style>
+    /* Import Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+    body{
+        background: linear-gradient(135deg, #b6f3a1, #7ed957);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+    }
+
+    .todolist{
+        width: 420px;
+        min-height: 480px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-task{
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    input{
+        flex: 1;
+        height: 44px;
+        border: 2px solid #e0e0e0;
+        padding: 0 15px;
+        font-size: 16px;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    input:focus{
+        border-color: #7ed957;
+        box-shadow: 0 0 0 3px rgba(126,217,87,0.2);
+    }
+
+    button{
+        padding: 0 18px;
+        border: none;
+        font-size: 15px;
+        font-weight: 500;
+        border-radius: 10px;
+        cursor: pointer;
+        background-color: #7ed957;
+        color: #ffffff;
+        transition: 0.3s;
+    }
+
+    button:hover{
+        background-color: #5fc93f;
+    }
+
+    hr{
+        width: 100%;
+        border: none;
+        height: 1px;
+        background-color: #eaeaea;
+        margin: 15px 0;
+    }
+
+    ul{
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul li{
+        list-style: none;
+        background-color: #f7f7f7;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 15px;
+    }
+
+    ul li:hover{
+        background-color: #eeeeee;
+    }
+
+    .done{
+        color: #aaaaaa;
+        text-decoration: line-through;
+    }
+
+    span{
+        width: 28px;
+        height: 28px;
+        background-color: #ff6b6b;
+        color: #ffffff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    span:hover{
+        background-color: #ff3b3b;
+    }
+</style>
+
+    </style>
+</head>
+<body>
+    <div class="todolist">
+        <div class="new-task">
+            <input type="text" id="todo">
+            <button onclick="addTask()">Add</button>
+            <button onclick="clearTasks()">x</button>
+        </div>
+        <hr>
+
+        <ul id="lists">
+            
+        </ul>
+    </div>
+
+    <script>
+        const todo = document.getElementById("todo");
+        const lists = document.getElementById("lists");
+        
+
+        let mytodos = JSON.parse(localStorage.getItem("mytodos")) || [];
+
+        function addTask() {
+            const tasktext = todo.value.trim();
+
+            if(tasktext === "") return;
+
+            const task = {
+                text: tasktext,
+                status: false,
+            };
+
+            mytodos.push(task);
+            localStorage.setItem("mytodos", JSON.stringify(mytodos));
+
+            todo.value = "";
+            renderTask();
+        }
+
+        function renderTask() {
+            lists.innerHTML = "";
+            
+
+            mytodos.forEach((task, index) => {
+                const li = document.createElement("li");
+                const span = document.createElement("span");
+                li.textContent = task.text;
+                span.textContent = "x";
+
+                if (task.status) {
+                    li.classList.add("done");
+                }
+
+                lists.appendChild(li);
+                li.appendChild(span);
+
+                li.addEventListener("click", () => {
+                   task.status = !task.status;
+                   localStorage.setItem("mytodos", JSON.stringify(mytodos));
+                   renderTask(); 
+                });
+
+
+                span.addEventListener("click", (e) => {
+                    e.stopPropagation(); 
+                    mytodos.splice(index, 1);
+                    localStorage.setItem("mytodos", JSON.stringify(mytodos));
+                    renderTask();
+                });
+            });
+        }
+
+
+        renderTask();
+
+        function clearTasks() {
+            mytodos = [];
+            localStorage.removeItem("mytodos");
+            renderTask();
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 300px;
+            height: 300px;
+            background-color: blue;
+            color: aliceblue;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="show()">box</button>
+    <div id="box">
+        <ul>
+            <li>A</li>
+            <li>B</li>
+            <li>C</li>
+        </ul>
+    </div>
+
+    <script>
+        var box=document.getElementById('box')
+        function show(){
+             if(box.style.display == "none"){box.style.display="block";}
+            else{box.style.display ='none';}
+
+        }
+    </script>
+</body>
+</html>

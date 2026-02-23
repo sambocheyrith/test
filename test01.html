@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="todo">
+    <button onclick="addTask()">Add</button>
+    <button>x</button>
+
+    <ul id="lists">
+        
+    </ul>
+
+    <script>
+        const todo = document.getElementById("todo");
+        const lists = document.getElementById("lists");
+        let mytodos = [];
+
+        function addTask() {
+            const task = todo.value.trim();
+            if (task === "") return;
+
+            const li = document.createElement("li");
+            li.textContent = task;
+
+            lists.appendChild(li);
+            // mytodos.push(task);
+
+            todo.value = ""; // clear input
+        }
+    </script>
+
+</body>
+</html>

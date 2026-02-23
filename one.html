@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            background-color:rgb(173, 235, 106);
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+        .todolist{
+            padding: 30px;
+            width: 456px;
+            height: 500px;
+            background-color: yellow;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow:0px 8px 8px rgb(91, 91, 91);
+            
+        }
+
+        .new-task {
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .done {
+            color: gray;
+            text-decoration: line-through;
+        }
+
+        ul{
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        ul li {
+            list-style: none;
+            background-color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 25px;
+        }
+
+        span {
+            cursor: pointer;
+            color: rgb(255, 255, 255);
+            width: 20px;
+            height: 20px;
+            background-color: lightcoral;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+
+        input{
+            width: 270px;
+            height: 40px;
+            border: none;
+            padding: 10px 20px;
+            font-size: 24px;
+            border-radius: 8px;
+        }
+        button{
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            border-radius: 15px;
+            background-color: rgb(183, 246, 123);
+        }
+    </style>
+</head>
+<body>
+    <div class="todolist">
+        <div class="new-task">
+            <input type="text" id="todo">
+            <button onclick="addTask()">Add</button>
+            <button onclick="clearTasks()">x</button>
+        </div>
+        <hr>
+
+        <ul id="lists">
+            
+        </ul>
+    </div>
+
+    <script>
+        const todo = document.getElementById("todo");
+        const lists = document.getElementById("lists");
+        
+
+        let mytodos = JSON.parse(localStorage.getItem("mytodos")) || [];
+
+        function addTask() {
+            const tasktext = todo.value.trim();
+
+            if(tasktext === "") return;
+
+            const task = {
+                text: tasktext,
+                status: false,
+            };
+
+            mytodos.push(task);
+            localStorage.setItem("mytodos", JSON.stringify(mytodos));
+
+            todo.value = "";
+            renderTask();
+        }
+
+        function renderTask() {
+            lists.innerHTML = "";
+            
+
+            mytodos.forEach((task, index) => {
+                const li = document.createElement("li");
+                const span = document.createElement("span");
+                li.textContent = task.text;
+                span.textContent = "x";
+
+                if (task.status) {
+                    li.classList.add("done");
+                }
+
+                lists.appendChild(li);
+                li.appendChild(span);
+
+                li.addEventListener("click", () => {
+                   task.status = !task.status;
+                   localStorage.setItem("mytodos", JSON.stringify(mytodos));
+                   renderTask(); 
+                });
+
+
+                span.addEventListener("click", (e) => {
+                    e.stopPropagation(); 
+                    mytodos.splice(index, 1);
+                    localStorage.setItem("mytodos", JSON.stringify(mytodos));
+                    renderTask();
+                });
+            });
+        }
+
+
+        renderTask();
+
+        function clearTasks() {
+            mytodos = [];
+            localStorage.removeItem("mytodos");
+            renderTask();
+        }
+
+    </script>
+
+</body>
+</html>

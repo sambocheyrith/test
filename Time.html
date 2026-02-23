@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="timer">05:00</h1>
+    <button id="btnstart" onclick="startTimer()">Start</button>
+    <button id="btnstop" style="display: none;" onclick="stopTimer()">Stop</button>
+    <button id="btnreset" style="display: none;" onclick="resetTimer()">Reset</button>
+
+    <script>
+
+        const timer = document.getElementById("timer");
+        const btnstart = document.getElementById("btnstart");
+        const btnstop = document.getElementById("btnstop");
+        const btnreset = document.getElementById("btnreset");
+        let min = 1;
+        let sec = 12;
+
+
+        function test(){
+            
+            sec--;
+            timer.innerText = min.toString().padStart(2, '0') + ":" + sec.toString().padStart(2, '0');
+              if(sec == 0) {
+                min--;
+                sec = 12;
+
+                if(min < 0){
+                    clearInterval(setTimer);
+                    btnstart.disabled = true;
+                }
+             }
+        }
+
+        let setTimer;
+
+        function startTimer(){
+            setTimer = setInterval(test, 1000);
+            btnstart.innerText = "Resume";
+            btnstop.style.display = "inline-block";
+             btnreset.style.display = "inline-block";
+
+           
+
+        }
+
+        function stopTimer(){
+            clearInterval(setTimer);
+        }
+
+        function resetTimer(){
+            clearInterval(setTimer);
+            min = 5;
+            timer.innerText = 5;
+            btnstart.innerText = "Start";
+             btnstop.style.display = "none";
+             btnreset.style.display = "none";
+             btnstart.disabled = false;
+        }
+    </script>
+</body>
+</html>

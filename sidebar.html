@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --light: rgb(245, 245, 245);
+            --dark: rgb(12, 12, 12);
+            --brand-color: rgb(195, 224, 249);
+ 
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+
+        header {
+            background-color: var(--brand-color);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-family: monospace;
+        }
+
+        header a {
+            margin: 0 8px;
+        }
+
+        nav {
+            background-color: var(--brand-color);
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            font-size: 20px;
+            font-family: monospace;
+            transform: translateX(-100%);
+            transition: all 0.3s ease;
+        }
+
+        nav .menu {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        nav .logo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            display: none;
+            background-color: var(--light);
+            border: none;
+            padding: 4px;
+            
+        }
+
+        .menu-toggle span {
+            color: var(--dark);
+        }
+
+        .logo-desktop {
+            display: flex;
+            gap: 8px;
+        }
+
+        nav .menu a{
+            background-color: rgb(94, 94, 245);
+            color:white;
+            padding: 5px;
+            border-radius: 12px;
+            width: 100%;
+        }
+
+
+        .login {
+            
+            width: 300px;
+            background-color: antiquewhite;
+            height: auto;
+            min-height: 300px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transition: 0.3s ease;
+            transform: translate(-50%,-50%)scale(0);
+            z-index: 1000;
+            padding: 15px;
+            box-sizing: border-box;
+
+      
+        }
+
+        .login h1{
+            font-size: large;
+        }
+
+        .close{
+            width: 35px;
+            height: 35px;
+            background-color: red;
+            color: aliceblue;
+            border-radius: 12px;
+            border: none;
+            justify-content: left;
+        }
+
+        
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+
+        @media screen and (max-width: 800px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .menu-desktop {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-desktop">
+            <button class="menu-toggle">
+                <span class="material-symbols-outlined">
+                menu
+                </span>
+            </button>
+            logo.
+        </div>
+
+        <div class="menu-desktop">
+            <a href="">Home</a>
+            <a href="">Courses</a>
+        </div>
+        <div id="openLogin">
+            Login
+        </div>
+    </header>
+
+    <nav>
+        <div class="logo">
+                <h1>Logo</h1>
+                <button class="btn-close">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </div>
+        <div class="menu">
+            <a href="">Home</a>
+            <a href="">Courses</a>
+        </div>
+    </nav>
+
+    <div class="login">
+       <div class="card-title">
+            <h1>Login</h1>
+            <button class="close">x</button>
+       </div>
+        <div></div>
+    </div>
+
+    <h1>welcome</h1>
+
+    <button id="changeColorButton">Change Color</button>
+
+<script>
+  // Get the root element
+  const root = document.documentElement;
+
+  // Select the button
+  const button = document.getElementById('changeColorButton');
+
+  // Add an event listener to change the color when clicked
+  button.addEventListener('click', () => {
+    // Set the new value for the --primary-color variable (e.g., orange-red)
+    root.style.setProperty('--light', 'rgb(12, 12, 12)');
+    root.style.setProperty('--dark', 'rgb(245, 245, 245)');
+    root.style.setProperty('--brand-color', 'rgb(11, 54, 92)');
+  });
+</script>
+
+<script>
+    const menuToggle = document.querySelector(".menu-toggle");
+    const btnClose = document.querySelector(".btn-close");
+    const xclose = document.querySelector(".close");
+    const sidebar = document.querySelector("nav");
+    const openLogin = document.getElementById('openLogin');
+    const login = document.querySelector(".login");
+
+
+    menuToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        sidebar.style.transform = "translateX(0)";
+    });
+
+ 
+    btnClose.addEventListener("click", () => {
+        sidebar.style.transform = "translateX(-100%)";
+    });
+
+
+    openLogin.addEventListener('click', (e) => {
+        e.stopPropagation();
+        login.style.transform = "translate(-50%, -50%) scale(1)";
+    });
+
+
+    xclose.addEventListener("click", () => {
+        login.style.transform = "translate(-50%, -50%) scale(0)";
+    });
+
+
+    document.addEventListener("click", (e) => {
+
+        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.style.transform = "translateX(-100%)";
+        }
+
+        if (!login.contains(e.target) && e.target !== openLogin) {
+            login.style.transform = "translate(-50%, -50%) scale(0)";
+        }
+    });
+
+    sidebar.addEventListener("click", (e) => e.stopPropagation());
+    login.addEventListener("click", (e) => e.stopPropagation());
+</script>
+
+</body>
+</html>

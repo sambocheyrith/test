@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #dropdown-item {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="show()">
+        Menu
+    </button>
+    <ul id="dropdown-item">
+        <li>Home</li>
+        <li>Profile</li>
+        <li>Setting</li>
+    </ul>
+
+
+    <script>
+        var dropdown_item = document.getElementById('dropdown-item');
+
+
+        function show(){
+            if(dropdown_item.style.display == "none"){
+                dropdown_item.style.display = "block";
+            } else {
+                dropdown_item.style.display = "none";
+            }
+            
+        }
+    </script>
+</body>
+</html>

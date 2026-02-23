@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-400 flex items-center justify-center h-screen">
+
+    <div class="bg-black p-6 rounded-2xl shadow-2xl w-80">
+        
+        <div class="text-right mb-6 px-2">
+            <div id="prev" class="text-white/80 text-md font-light truncate h-6"></div>
+            <div id="display" class="text-white text-5xl font-light truncate">0</div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-3">
+            <!-- បន្ថែម id ឬ class ដើម្បីស្រួលចាប់ក្នុង JS -->
+            <button id="clear" class="col-span-2 bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">AC</button>
+            <button id="delete" class="bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">DEL</button>
+            <button class="operator bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">/</button>
+
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">1</button>
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">2</button>
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">3</button>
+            <button class="operator bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">+</button>
+
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">4</button>
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">5</button>
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">6</button>
+            <button class="operator bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">-</button>
+
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">7</button>
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">8</button>
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">9</button>
+            <button class="operator bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">*</button>
+
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">.</button>
+            <button class="number bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">0</button>
+            <button id="equals" class="col-span-2 bg-zinc-900 text-white py-4 rounded-xl text-xl hover:bg-gray-600 transition">=</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        const prev = document.getElementById('prev');
+        const numbers = document.querySelectorAll(".number");
+        const operators = document.querySelectorAll(".operator");
+        const clearBtn = document.getElementById("clear");
+        const deleteBtn = document.getElementById("delete");
+        const equalsBtn = document.getElementById("equals");
+
+        let currentOpr = "";
+
+        // ១. សម្រាប់ប៊ូតុងលេខ
+        numbers.forEach(number => {
+            number.addEventListener("click", () => {
+                if(display.innerText.includes(".") && number.innerText === "."){
+                    return;
+                }
+
+                if (display.innerText === '0' && number.innerText !== ".") {
+                    display.innerText = number.innerText;
+                } else {
+                    display.innerText += number.innerText;
+                }
+            });
+        });
+
+        // ២. សម្រាប់ប៊ូតុងប្រមាណវិធី (+, -, *, /)
+        operators.forEach(op => {
+            op.addEventListener("click", () => {
+                if (display.innerText === "") return;
+                
+                // បើមានលេខចាស់ និងប្រមាណវិធីចាស់ ត្រូវគណនាមុននឹងបន្ត
+                if (prev.innerText !== "") {
+                    calculate();
+                }
+
+                currentOpr = op.innerText;
+                prev.innerText = display.innerText + " " + currentOpr;
+                display.innerText = "0";
+            });
+        });
+
+        // ៣. សម្រាប់ប៊ូតុង AC (Clear)
+        clearBtn.addEventListener("click", () => {
+            display.innerText = '0';
+            prev.innerText = "";
+            currentOpr = "";
+        });
+
+        // ៤. សម្រាប់ប៊ូតុង DEL (Delete)
+        deleteBtn.addEventListener("click", () => {
+            if (display.innerText.length > 1) {
+                display.innerText = display.innerText.slice(0, -1);
+            } else {
+                display.innerText = '0';
+            }
+        });
+
+        // ៥. សម្រាប់ប៊ូតុងសញ្ញាស្មើ (=)
+        equalsBtn.addEventListener("click", () => {
+            calculate();
+        });
+
+        // មុខងារគណនា
+        function calculate() {
+            let result = 0;
+            const prevValue = parseFloat(prev.innerText);
+            const currentValue = parseFloat(display.innerText);
+
+            if (isNaN(prevValue) || isNaN(currentValue)) return;
+
+            switch (currentOpr) {
+                case "+":
+                    result = prevValue + currentValue;
+                    break;
+                case "-":
+                    result = prevValue - currentValue;
+                    break;
+                case "*":
+                    result = prevValue * currentValue;
+                    break;
+                case "/":
+                    result = prevValue / currentValue;
+                    break;
+                default:
+                    return;
+            }
+
+            display.innerText = result;
+            prev.innerText = "";
+            currentOpr = "";
+        }
+    </script>
+</body>
+</html>
